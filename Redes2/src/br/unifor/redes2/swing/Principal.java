@@ -41,7 +41,7 @@ public class Principal {
 		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		janela.setLayout(null);
 	
-		painelChat.setSize(200, 100);
+		
 		btnEnviar.setSize(100, 110);
 		btnEnviar.setLocation(480, 345);
 
@@ -60,18 +60,17 @@ public class Principal {
 		janela.add(exibeMgs);
 		janela.add(scrollTxt);
 		
-		exibeMgs.setText("Chat iniciado... Porta: "+ cliente.getPort() +", " +" Host: "+ cliente.getHost() );	
-	
+		exibeMgs.setText("Chat iniciado... Porta: "+ cliente.getPort() +", " +" Host: "+ cliente.getHost() +"\n");	
+		
+		janela.repaint();
 		btnEnviar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (!txtArea.getText().isEmpty() && !txtArea.isFocusOwner()) {
-					exibeMgs.setText(cliente.getName() + ": " + txtArea.getText());
+					exibeMgs.append(cliente.getName() + ": " + txtArea.getText()+"\n");
 					 txtArea.setText("");
 				}
-			}
-
-			
+			}		
 		});
 	}
 
