@@ -2,6 +2,9 @@ package br.unifor.redes2.swing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import br.unifor.redes2.cliente.Cliente;
+import br.unifor.redes2.sever.Servidor;
 
 public class Principal {
 	static Cliente cliente;
@@ -20,6 +24,9 @@ public class Principal {
 	private JTextArea txtArea;
 	private JScrollPane scrollTxt;
 	private JTextArea exibeMgs;
+	private Socket socket;
+	private static int port=8080;
+	private static String host="localhost";
 
 	public Principal(Cliente cliente) {
 		montaJanela();
@@ -32,8 +39,7 @@ public class Principal {
 		txtArea = new JTextArea();
 		exibeMgs = new JTextArea();
 		scrollTxt = new JScrollPane(txtArea);
-
-		
+				
 		janela.setTitle("Chat Redes 2");
 		janela.setVisible(true);
 		janela.setSize(600, 500);
@@ -66,18 +72,24 @@ public class Principal {
 		btnEnviar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (!txtArea.getText().isEmpty() && !txtArea.isFocusOwner()) {
-					exibeMgs.append(cliente.getName() + ": " + txtArea.getText()+"\n");
-					 txtArea.setText("");
-				}
-			}		
+						
+
+					if (!txtArea.getText().isEmpty() && !txtArea.isFocusOwner()) {
+						//recebeMgs(exibeMgs.append(cliente.getName() + ": " + txtArea.getText()+"\n"));
+						txtArea.setText("");
+					}
+								
+			}
+
+			
 		});
 	}
 
 	public static void main(String[] args) {
 		String nameCliente= JOptionPane.showInputDialog("Entre com seu nome: ");
 		if(!nameCliente.isEmpty()) {
-			cliente  = new Cliente("localhost", 8080, nameCliente);
+			cliente  = new Cliente(host, port, nameCliente);
+			Servidor  server = new Servidor(port);
 			Principal p = new Principal(cliente);
 			
 		}else {
